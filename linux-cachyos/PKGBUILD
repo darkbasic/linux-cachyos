@@ -79,7 +79,7 @@
 # - "native" (use compiler autodetection)
 # - "zen4" (Use znver4 compiler optimizations)
 # - "generic" (kernel's default - to share the package between machines with different CPU µarch as long as they are x86-64)
-: "${_processor_opt:=}"
+: "${_processor_opt:=zen4}"
 
 # Clang LTO mode, only available with the "llvm" compiler - options are "none", "full" or "thin".
 # ATTENTION - one of three predefined values should be selected!
@@ -109,7 +109,7 @@
 # Build the zfs module in to the kernel
 # WARNING: The ZFS module doesn't build with selected RT sched due to licensing issues.
 # If you use ZFS, refrain from building the RT kernel
-: "${_build_zfs:=no}"
+: "${_build_zfs:=yes}"
 
 # Builds the nvidia module and package it into a own base
 # This does replace the requirement of nvidia-dkms
@@ -175,7 +175,7 @@ _stable=${_major}.${_minor}
 _srcname=linux-${_stable}
 #_srcname=linux-${_major}
 pkgdesc='Linux BORE + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements.'
-pkgrel=1
+pkgrel=99
 _kernver="$pkgver-$pkgrel"
 _kernuname="${pkgver}-${_pkgsuffix}"
 arch=('x86_64')
@@ -205,6 +205,20 @@ _nv_open_pkg="NVIDIA-kernel-module-source-${_nv_ver}"
 source=(
     "https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/${_srcname}.tar.xz"
     "config"
+    "0001-amd-isp4-patch.patch"
+    "0002-amd-isp4-patch.patch"
+    "0003-amd-isp4-patch.patch"
+    "0004-amd-isp4-patch.patch"
+    "0005-amd-isp4-patch.patch"
+    "0006-amd-isp4-patch.patch"
+    "0007-amd-isp4-patch.patch"
+    "0001-amd-isp4-patch.patch"
+    "0002-amd-isp4-patch.patch"
+    "0003-amd-isp4-patch.patch"
+    "0004-amd-isp4-patch.patch"
+    "0005-amd-isp4-patch.patch"
+    "0006-amd-isp4-patch.patch"
+    "0007-amd-isp4-patch.patch"
     "${_patchsource}/all/0001-cachyos-base-all.patch")
 
 # LLVM makedepends
@@ -297,6 +311,10 @@ prepare() {
 
     echo "Setting config..."
     cp ../config .config
+
+    # --- Enable AMD ISP4 Driver ---
+    echo "Enabling AMD ISP4 Driver..."
+    scripts/config -m AMD_ISP4
 
     ### Select CPU optimization
     if [ -n "$_processor_opt" ]; then
@@ -803,5 +821,20 @@ done
 
 b2sums=('1e8e226364a85f3fd66e51495a99a76e377389aa48c708953aaa28b6ec669f05aab6d240365965eec5643e2fa6aee15796005b2873e8fea748e432b1d799eabc'
         'bc863600b02ccb6404e95e85f31b1cbc1293c663e0dd96eb0b7f42277b937849f156f509e688862d6926711e2297712bce4fdbfc04231b104b2608b1fc1ba34b'
+        '62c60ff3e16f3e828707fa2415f17daf0f37b907cedd920e8b8ea2a9b7eec6d150857edffe6f1bafdffb69a04700eaaf2becd73a535f145f7f4b723a61d51837'
+        '7997ce0bea2818c658476ff6fcfe07308885f4ce5abf7233592d4594d758af29ac717d3c140ecf357d132d1b97d0b9e62de62539f1325d36a90b4adba2555f4e'
+        '58325bca106eb2f81c97fe315ebffe5efc82b25d5560561ca5cc229d5689c84995316c1be7b0ff60bdb6a640937a3e8513aebe76d81f5197e445ae1421be74d9'
+        '07b1f66abc6f7ba02f1b64983890d2cbfaa2b663249f4be5c978a383c3d53be1e8f5e35a79f28175371caebc9f4ae09761731c8f7a6873a91ab9fd13ed2c330f'
+        '26df4f5c7f60c45da4c6cc9653dcb9263ec5bf7ec3fa1a3fcebfb7180377e65739a5da77cce48296a5e06ca59dd3e72b00436e8335fe5f59fe51cea852a605e7'
+        '98154d4d16b72e03fd0d1df3377274f7a1a22b61569b5849b06c2ad0eb7e89a6c9b682cffb7a2668cbfa0fca21d75958aa877c141beec5f5494188dbe81c97d5'
+        '4369390c5c2551c4c57ebf5fd3a63679de5a7754ee8fbb96730d7b355915ee613826eff9498afa9474e7bbda99f5e809acb9309f4aa49a9a414ee47998deb3a7'
+        '62c60ff3e16f3e828707fa2415f17daf0f37b907cedd920e8b8ea2a9b7eec6d150857edffe6f1bafdffb69a04700eaaf2becd73a535f145f7f4b723a61d51837'
+        '7997ce0bea2818c658476ff6fcfe07308885f4ce5abf7233592d4594d758af29ac717d3c140ecf357d132d1b97d0b9e62de62539f1325d36a90b4adba2555f4e'
+        '58325bca106eb2f81c97fe315ebffe5efc82b25d5560561ca5cc229d5689c84995316c1be7b0ff60bdb6a640937a3e8513aebe76d81f5197e445ae1421be74d9'
+        '07b1f66abc6f7ba02f1b64983890d2cbfaa2b663249f4be5c978a383c3d53be1e8f5e35a79f28175371caebc9f4ae09761731c8f7a6873a91ab9fd13ed2c330f'
+        '26df4f5c7f60c45da4c6cc9653dcb9263ec5bf7ec3fa1a3fcebfb7180377e65739a5da77cce48296a5e06ca59dd3e72b00436e8335fe5f59fe51cea852a605e7'
+        '98154d4d16b72e03fd0d1df3377274f7a1a22b61569b5849b06c2ad0eb7e89a6c9b682cffb7a2668cbfa0fca21d75958aa877c141beec5f5494188dbe81c97d5'
+        '4369390c5c2551c4c57ebf5fd3a63679de5a7754ee8fbb96730d7b355915ee613826eff9498afa9474e7bbda99f5e809acb9309f4aa49a9a414ee47998deb3a7'
         '39b60319ce157ad58d655c220d34ede65275ec5638e5fad4602d89aa9a93aaa17e2c2f00c0c978aa2b42056f5ea04e3319b44484cd8eeda16637c6cd0ed9c5d4'
-        'c7294a689f70b2a44b0c4e9f00c61dbd59dd7063ecbe18655c4e7f12e21ed7c5bb4f5169f5aa8623b1c59de7b2667facb024913ecb9f4c650dabce4e8a7e5452')
+        'c7294a689f70b2a44b0c4e9f00c61dbd59dd7063ecbe18655c4e7f12e21ed7c5bb4f5169f5aa8623b1c59de7b2667facb024913ecb9f4c650dabce4e8a7e5452'
+        '6547bd4222930e4f457b64f29eaab112d106b9c4ec41c26c7d39cf259a151bd9a58cf0b4a6eadbfbf340b7c96c338c06661c63e1dc91c4b43c44168909f7126d')
