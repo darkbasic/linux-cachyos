@@ -18,16 +18,33 @@ pkgbase = linux-cachyos-rc
 	makedepends = tar
 	makedepends = xz
 	makedepends = zstd
+	makedepends = git
 	options = !strip
 	options = !debug
 	options = !lto
 	source = https://github.com/torvalds/linux/archive/refs/tags/v6.18-rc7.tar.gz
 	source = config
+	source = 0001-amd-isp4-patch.patch
+	source = 0002-amd-isp4-patch.patch
+	source = 0003-amd-isp4-patch.patch
+	source = 0004-amd-isp4-patch.patch
+	source = 0005-amd-isp4-patch.patch
+	source = 0006-amd-isp4-patch.patch
+	source = 0007-amd-isp4-patch.patch
 	source = https://raw.githubusercontent.com/cachyos/kernel-patches/master/6.18/all/0001-cachyos-base-all.patch
+	source = git+https://github.com/cachyos/zfs.git#commit=7de9800e5ce45d03c797be57a3e959fc914b2adb
 	source = https://raw.githubusercontent.com/cachyos/kernel-patches/master/6.18/sched/0001-bore-cachy.patch
 	b2sums = 6b17389bf23dc88f21cec0c7727427882cdb5df87d34c60d839f620b6fc05e449d584fbd03c8623f080d07203d6e475a8d6b4ef11c8cde9bd1ca18d013063cad
 	b2sums = e39b09a43f94c626b7788d437fb1e26dfcd719c184581405e91546bd9231bb9de2b97bc6d8b2c0ce017ed67d946a16ab146ffbdd87fc0161426b8ecde0027469
+	b2sums = 62c60ff3e16f3e828707fa2415f17daf0f37b907cedd920e8b8ea2a9b7eec6d150857edffe6f1bafdffb69a04700eaaf2becd73a535f145f7f4b723a61d51837
+	b2sums = 7997ce0bea2818c658476ff6fcfe07308885f4ce5abf7233592d4594d758af29ac717d3c140ecf357d132d1b97d0b9e62de62539f1325d36a90b4adba2555f4e
+	b2sums = 58325bca106eb2f81c97fe315ebffe5efc82b25d5560561ca5cc229d5689c84995316c1be7b0ff60bdb6a640937a3e8513aebe76d81f5197e445ae1421be74d9
+	b2sums = 07b1f66abc6f7ba02f1b64983890d2cbfaa2b663249f4be5c978a383c3d53be1e8f5e35a79f28175371caebc9f4ae09761731c8f7a6873a91ab9fd13ed2c330f
+	b2sums = 26df4f5c7f60c45da4c6cc9653dcb9263ec5bf7ec3fa1a3fcebfb7180377e65739a5da77cce48296a5e06ca59dd3e72b00436e8335fe5f59fe51cea852a605e7
+	b2sums = 98154d4d16b72e03fd0d1df3377274f7a1a22b61569b5849b06c2ad0eb7e89a6c9b682cffb7a2668cbfa0fca21d75958aa877c141beec5f5494188dbe81c97d5
+	b2sums = 4369390c5c2551c4c57ebf5fd3a63679de5a7754ee8fbb96730d7b355915ee613826eff9498afa9474e7bbda99f5e809acb9309f4aa49a9a414ee47998deb3a7
 	b2sums = bf61130d27b16f3ac7129dc57095103efba918d6468d2726d0ed73982c99967e05c7ca2e62e269f9e2e7433c416a231cb7f8af2afc507e336da39cbb82202977
+	b2sums = 032be3457382e66e5b0a3c1995c82e1c4b3efea8b4f5225f72865d1f78a6d460a70efa20269c7dd18a4d72f4d1036db9a64c9ad77503c34998fe768b62adb5a5
 	b2sums = bfd5d4cdfe8f2c2e7466d7095befe40f95049ef8190e2ba01d7ba853903741d6ccb54087e8af72f4dad1790faf6d341d7b55b14eb00405d54bd4f62c772b880d
 
 pkgname = linux-cachyos-rc
@@ -54,3 +71,10 @@ pkgname = linux-cachyos-rc-headers
 	depends = clang
 	depends = llvm
 	depends = lld
+
+pkgname = linux-cachyos-rc-zfs
+	pkgdesc = zfs module for the Linux BORE + LTO + AutoFDO + Propeller + Cachy Sauce Kernel by CachyOS with other patches and improvements - Release Candidate kernel
+	license = CDDL
+	depends = pahole
+	depends = linux-cachyos-rc=6.18.rc7-1
+	provides = ZFS-MODULE
